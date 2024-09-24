@@ -11,10 +11,10 @@ class CreateBudgetsTable extends Migration
         Schema::create('budgets', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->decimal('amount', 10, 2); // Tracks how much budget is left
+            $table->decimal('daily_ad_spend', 10, 2); // Daily budget set by the user
+            $table->decimal('remaining_budget', 10, 2); // Remaining budget after lead deduction
             $table->timestamps();
-
-            // Foreign key to link with users table
+        
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }

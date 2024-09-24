@@ -9,11 +9,12 @@ class Budget extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'amount'];
+    protected $fillable = [
+        'user_id',
+        'daily_ad_spend',
+        'remaining_budget',
+    ];
 
-    /**
-     * Get the user associated with the budget.
-     */
     public function user()
     {
         return $this->belongsTo(User::class);

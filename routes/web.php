@@ -53,4 +53,8 @@ Route::post('/logout', function () {
     return redirect('/login');
 })->name('logout');
 
+Route::get('/budget/create', [BudgetController::class, 'create'])->name('budget.create');
+Route::post('/budget', [BudgetController::class, 'store'])->name('budget.store');
+
+
 require __DIR__.'/auth.php';
