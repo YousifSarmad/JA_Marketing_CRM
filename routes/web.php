@@ -5,7 +5,9 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use App\Models\Lead;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\PaymentController;
 use Inertia\Inertia;
+use App\Http\Controllers\LeadController;
 
 // Home route
 Route::get('/', function () {
@@ -16,6 +18,27 @@ Route::get('/', function () {
         'phpVersion' => PHP_VERSION,
     ]);
 });
+
+// Budget Routes
+Route::get('/budget/create', [BudgetController::class, 'create'])->name('budget.create');
+Route::post('/budget', [BudgetController::class, 'store'])->name('budget.store');
+
+// Payment Routes
+Route::post('/create-checkout-session', [PaymentController::class, 'createCheckoutSession']);
+Route::get('/payment/success', [PaymentController::class, 'success'])->name('payment.success');
+Route::get('/payment/cancel', [PaymentController::class, 'cancel'])->name('payment.cancel');
+
+// Route to display form for creating a new lead
+Route::get('/leads/create', [LeadController::class, 'create'])->name('leads.create');
+
+// Route to store the new lead in the database
+Route::post('/leads', [LeadController::class, 'store'])->name('leads.store');
+
+// Route to display all leads (this is what redirects to after storing a lead)
+Route::get('/leads', [LeadController::class, 'index'])->name('leads.index');
+
+Route::get('/dashboard', [LeadController::class, 'dashboard'])->middleware(['auth', 'verified'])->name('dashboard');
+
 
 // Dashboard route
 Route::get('/dashboard', function () {

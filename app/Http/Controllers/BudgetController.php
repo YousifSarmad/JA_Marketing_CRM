@@ -2,35 +2,27 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Budget;
 use Illuminate\Http\Request;
+use App\Models\Budget;
 
 class BudgetController extends Controller
 {
     public function create()
     {
-        return inertia('Budget/Create');
+        return inertia('BudgetCreate');
     }
 
     public function store(Request $request)
     {
-        // Calculate estimated leads and revenue
-        $validated = $request->validate([
-            'daily_ad_spend' => 'required|numeric|min:1',
+        $request->validate([
+            'amount' => 'required|numeric',
         ]);
 
         $user = auth()->user();
-        $budget = Budget::create([
-            'user_id' => $user->id,
-            'daily_ad_spend' => $validated['daily_ad_spend'],
-            'remaining_budget' => $validated['daily_ad_spend'],
+        $user->budget()->create([
+            'amount' => $request->input('amount'),
         ]);
 
-        return redirect()->route('dashboard')->with('message', 'Budget set successfully');
-    }
-
-    public function show(Budget $budget)
-    {
-        return inertia('Budget/Show', ['budget' => $budget]);
+        return redirect()->route('dashboard')->with('success', 'Budget set successfully!');
     }
 }

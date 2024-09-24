@@ -23,7 +23,11 @@ class Lead extends Model
         'lead_stage_id', // reference to the stage of the lead
     ];
 
-    // Define the relationships
+    // Define the relationship for the user assigned to the lead
+    public function assignedUser()
+    {
+        return $this->belongsTo(User::class, 'assigned_user_id');
+    }
 
     // Lead belongs to a User
     public function user()
