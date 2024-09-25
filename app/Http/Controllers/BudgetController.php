@@ -2,27 +2,40 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Budget;
+use App\Models\User;
+use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class BudgetController extends Controller
 {
+    // Show budget calculator
     public function create()
     {
-        return inertia('BudgetCreate');
+        return Inertia::render('Budget/Create');
     }
 
+    // Store calculated budget
     public function store(Request $request)
     {
         $request->validate([
-            'amount' => 'required|numeric',
+            'total_budget' => 'required|numeric',
+            'daily_budget' => 'required|numeric',
+            'leads_purchased' => 'required|integer',
         ]);
 
         $user = auth()->user();
-        $user->budget()->create([
-            'amount' => $request->input('amount'),
+
+        Budget::create([
+            'user_id' => $user->id,
+            'total_budget' => $request->total_budget,
+            'daily_budget' => $request->daily_budget,
+            'leads_purchased' => $request->leads_purchased,
+            'remaining_leads' => $request->leads_purchased,
+            'start_date' => now(),
+            'end_date' => now()->addMonth(),
         ]);
 
-        return redirect()->route('dashboard')->with('success', 'Budget set successfully!');
+        return redirect()->route('payment');
     }
 }

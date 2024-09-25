@@ -8,28 +8,27 @@ use Stripe\Checkout\Session;
 
 class PaymentController extends Controller
 {
-    public function createCheckoutSession(Request $request)
-    {
+    public function createPaymentSession(Request $request) {
         Stripe::setApiKey(env('STRIPE_SECRET'));
-
-    $session = Session::create([
-        'payment_method_types' => ['card'],
-        'line_items' => [[
-            'price_data' => [
-                'currency' => 'usd',
-                'product_data' => [
-                    'name' => 'Daily Ad Spend',
+    
+        $session = StripeSession::create([
+            'payment_method_types' => ['card'],
+            'line_items' => [[
+                'price_data' => [
+                    'currency' => 'usd',
+                    'product_data' => [
+                        'name' => 'Lead Package',
+                    ],
+                    'unit_amount' => $request->totalBudget * 100, // Total budget from the calculator
                 ],
-                'unit_amount' => $request->dailyAdSpend * 100, // Stripe requires amounts in cents
-            ],
-            'quantity' => 1,
-        ]],
-        'mode' => 'payment',  // Changed from 'subscription' to 'payment'
-        'success_url' => route('payment.success'),
-        'cancel_url' => route('payment.cancel'),
+                'quantity' => 1,
+            ]],
+            'mode' => 'payment',
+            'success_url' => route('payment.success'),
+            'cancel_url' => route('payment.cancel'),
         ]);
-
-        return response()->json(['id' => $session->id]);
+    
+        return redirect()->away($session->url);
     }
 
     public function success()

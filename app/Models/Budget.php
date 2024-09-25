@@ -11,10 +11,15 @@ class Budget extends Model
 
     protected $fillable = [
         'user_id',
-        'daily_ad_spend',
-        'remaining_budget',
+        'total_budget',
+        'daily_budget',
+        'leads_purchased',
+        'remaining_leads',
+        'start_date',
+        'end_date'
     ];
 
+    // Relation to User
     public function user()
     {
         return $this->belongsTo(User::class);

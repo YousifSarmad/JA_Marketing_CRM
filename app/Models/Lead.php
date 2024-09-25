@@ -16,6 +16,11 @@ class Lead extends Model
         'status',
         'lost_reason',
         'closed_at',
+        'name',
+        'email',
+        'phone',
+        'date_received',
+        'assigned_user_id',
         'user_id', // reference to the user who owns this lead
         'lead_source_id', // reference to the source of the lead
         'lead_type_id',   // reference to the type of the lead
@@ -57,5 +62,11 @@ class Lead extends Model
     public function leadStage()
     {
         return $this->belongsTo(LeadStage::class);
+    }
+    
+    // Accessor to calculate the time ago for the lead
+    public function getTimeAgoAttribute()
+    {
+        return $this->created_at->diffForHumans();
     }
 }
