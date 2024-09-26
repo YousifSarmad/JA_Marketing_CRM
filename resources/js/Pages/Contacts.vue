@@ -1,22 +1,15 @@
 <template>
-    <div class="contacts">
-      <Sidebar />
-      <div class="contacts-content">
-        <header>
-          <h1>Contacts</h1>
-        </header>
-        <section v-if="contacts.length === 0">
-          <p>No Contacts Available</p>
-        </section>
-        <section v-else>
-          <ul>
-            <li v-for="contact in contacts" :key="contact.id">{{ contact.name }}</li>
-          </ul>
-        </section>
-      </div>
+    <div class="page-container">
+      <h1>Contacts</h1>
+      <p>No contacts available yet.</p>
     </div>
   </template>
   
+  <style scoped>
+  .page-container {
+    text-align: center;
+  }
+  </style>
   <script setup>
   import Sidebar from './Sidebar.vue';
   import { ref } from 'vue';

@@ -1,109 +1,68 @@
 <template>
   <div class="dashboard-container">
-    <!-- Sidebar -->
-    <aside class="sidebar">
-      <img src="/image/image.png" alt="Logo" class="logo" />
-      <nav>
-        <ul>
-          <li><router-link to="/leads">New Leads</router-link></li>
-          <li><router-link to="/contacts">Contacts</router-link></li>
-          <li><router-link to="/pipeline">Pipeline</router-link></li>
-          <li><router-link to="/calendar">Calendar</router-link></li>
-          <li><router-link to="/messages">Messages</router-link></li>
-          <li><router-link to="/profile">Profile</router-link></li>
-        </ul>
-      </nav>
-    </aside>
+    <header class="dashboard-header">
+      <h2>Dashboard</h2>
+    </header>
 
-    <!-- Main Content -->
-    <main class="main-content">
-      <header class="dashboard-header">
-        <h1>New Leads</h1>
-        <p v-if="leads.length === 0">No New Leads Yet</p>
-        <p v-else>Your Leads: {{ leads.length }}</p>
-      </header>
-      
-      <!-- Leads display placeholder -->
-      <section class="leads-section">
-        <div v-if="leads.length === 0" class="no-leads">
-          <img src="/image/no-leads.png" alt="No Leads">
-          <p>No New Leads Yet</p>
-          <p>As soon as you receive a new lead, it will appear here!</p>
-        </div>
-      </section>
-    </main>
+    <section class="dashboard-content">
+      <div class="budget-section">
+        <h3>Your Budget: ${{ budget }}</h3>
+        <p>Your Leads: {{ leads.length }}</p>
+      </div>
+
+      <div class="no-leads-section">
+        <img src="/image/no_leads_icon.png" alt="No Leads" />
+        <h4>No New Leads Yet</h4>
+        <p>
+          As soon as you receive a new lead, it will appear here! Keep your
+          communication tools ready.
+        </p>
+      </div>
+    </section>
   </div>
 </template>
 
-<script setup>
-import { ref } from 'vue';
-import { usePage } from '@inertiajs/vue3';
-
-// Fetching user and leads
-const { leads } = usePage().props;
+<script>
+export default {
+  props: {
+    budget: Number,
+    leads: Array
+  }
+};
 </script>
 
 <style scoped>
 .dashboard-container {
-  display: flex;
-  height: 100vh;
-}
-
-.sidebar {
-  width: 250px;
-  background-color: #f9f9f9;
+  max-width: 1000px;
+  margin: 0 auto;
   padding: 20px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
-
-.logo {
-  display: block;
-  margin-bottom: 30px;
-}
-
-nav ul {
-  list-style: none;
-  padding: 0;
-}
-
-nav ul li {
-  margin-bottom: 20px;
-}
-
-nav ul li a {
-  text-decoration: none;
-  color: #333;
-  font-size: 18px;
-}
-
-.main-content {
-  flex-grow: 1;
-  padding: 30px;
 }
 
 .dashboard-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-.leads-section {
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   text-align: center;
+  margin-bottom: 30px;
 }
 
-.no-leads img {
-  width: 150px;
+.budget-section {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.no-leads-section {
+  text-align: center;
+  padding: 40px;
+  background-color: #fff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+.no-leads-section img {
+  max-width: 150px;
   margin-bottom: 20px;
 }
 
-.no-leads p {
-  color: #666;
-  font-size: 16px;
-  margin: 5px 0;
+.no-leads-section h4 {
+  margin-bottom: 10px;
+  font-size: 1.5rem;
 }
 </style>

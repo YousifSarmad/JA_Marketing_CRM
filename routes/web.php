@@ -3,11 +3,10 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
-use App\Models\Lead;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\PaymentController;
 use Inertia\Inertia;
 use App\Http\Controllers\LeadController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\BudgetController;
 use App\Http\Controllers\DashboardController;
 
@@ -35,42 +34,40 @@ Route::middleware('auth')->group(function () {
     Route::post('/payment', [PaymentController::class, 'createPaymentSession'])->name('payment.create');
 });
 
-// Lead Routes
+// Lead Routes - Only include controller routes here
 Route::middleware('auth')->group(function () {
     Route::get('/leads', [LeadController::class, 'index'])->name('leads.index');
     Route::get('/leads/create', [LeadController::class, 'create'])->name('leads.create');
     Route::post('/leads', [LeadController::class, 'store'])->name('leads.store');
 });
 
-// Dashboard Route
+// Dashboard Route - using DashboardController
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 });
 
-// Sidebar Routes (example for Leads, Contacts, etc.)
-Route::get('/leads', function () {
-    return Inertia::render('Leads');
-})->name('leads');
+// Sidebar Routes for Inertia Pages
+Route::middleware(['auth'])->group(function () {
+    Route::get('/contacts', function () {
+        return Inertia::render('Contacts');
+    })->name('contacts');
 
-Route::get('/contacts', function () {
-    return Inertia::render('Contacts');
-})->name('contacts');
+    Route::get('/pipeline', function () {
+        return Inertia::render('Pipeline');
+    })->name('pipeline');
 
-Route::get('/pipeline', function () {
-    return Inertia::render('Pipeline');
-})->name('pipeline');
+    Route::get('/calendar', function () {
+        return Inertia::render('Calendar');
+    })->name('calendar');
 
-Route::get('/calendar', function () {
-    return Inertia::render('Calendar');
-})->name('calendar');
+    Route::get('/messages', function () {
+        return Inertia::render('Messages');
+    })->name('messages');
 
-Route::get('/messages', function () {
-    return Inertia::render('Messages');
-})->name('messages');
-
-Route::get('/profile', function () {
-    return Inertia::render('Profile');
-})->name('profile');
+    Route::get('/profile', function () {
+        return Inertia::render('Profile');
+    })->name('profile');
+});
 
 // Profile Routes
 Route::middleware('auth')->group(function () {
@@ -92,4 +89,3 @@ Route::post('/logout', function () {
 
 // Include Auth routes
 require __DIR__.'/auth.php';
-
