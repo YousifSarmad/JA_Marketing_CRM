@@ -43,25 +43,34 @@ Route::middleware('auth')->group(function () {
 });
 
 // Dashboard Route
-Route::middleware(['auth', 'verified'])->get('/dashboard', function () {
-    $user = Auth::user();
-
-    // Fetch budget for the user
-    $budget = $user->budget->amount ?? 0; // Assuming user has a relationship with the budget
-
-    // Fetch leads for the user
-    $leads = Lead::where('assigned_user_id', $user->id)->get();
-
-    return Inertia::render('Dashboard', [
-        'user' => $user,
-        'budget' => $budget,
-        'leads' => $leads,
-    ]);
-})->name('dashboard');
-
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 });
+
+// Sidebar Routes (example for Leads, Contacts, etc.)
+Route::get('/leads', function () {
+    return Inertia::render('Leads');
+})->name('leads');
+
+Route::get('/contacts', function () {
+    return Inertia::render('Contacts');
+})->name('contacts');
+
+Route::get('/pipeline', function () {
+    return Inertia::render('Pipeline');
+})->name('pipeline');
+
+Route::get('/calendar', function () {
+    return Inertia::render('Calendar');
+})->name('calendar');
+
+Route::get('/messages', function () {
+    return Inertia::render('Messages');
+})->name('messages');
+
+Route::get('/profile', function () {
+    return Inertia::render('Profile');
+})->name('profile');
 
 // Profile Routes
 Route::middleware('auth')->group(function () {
@@ -70,12 +79,12 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-// Login route (this will render the custom Login.vue page)
+// Login route (custom login page)
 Route::get('/login', function () {
     return Inertia::render('Auth/Login');
 })->name('login');
 
-// Logout Route
+// Logout route
 Route::post('/logout', function () {
     auth()->logout();
     return redirect('/login');
@@ -83,3 +92,4 @@ Route::post('/logout', function () {
 
 // Include Auth routes
 require __DIR__.'/auth.php';
+
