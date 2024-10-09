@@ -82,6 +82,11 @@ const submit = () => {
                     <PrimaryButton class="ms-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
                         Sign in
                     </PrimaryButton>
+                    <p class="mt-4">
+                        Don’t have an account?
+                        <Link href="/register" class="underline">Create one now</Link>
+                    </p>
+
                 </div>
             </form>
         </div>
